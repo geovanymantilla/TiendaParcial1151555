@@ -1,6 +1,7 @@
 package co.edu.ufps.Controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -80,7 +81,9 @@ public class TiendaController extends HttpServlet {
 		Tienda ti = tiDao.findByField("email", tienda.getEmail());
 		if (ti == null) {
 			tiDao.insert(tienda);
-			request.getRequestDispatcher("login.jsp").forward(request, response);
+			List <Tienda> listatienda = tiDao.list();;
+			request.getSession().setAttribute("listatienda", listatienda);	
+		    response.sendRedirect("login.jsp");
 		} else {
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 		}

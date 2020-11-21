@@ -36,6 +36,18 @@ public class Prueba {
 		ti.setImagen("lapapita");
 		tiDao.insert(ti);
 		
+		Tienda ti2 = new Tienda();
+		ti2.setFacebook("www.facebook.com/papita");
+		ti2.setNombre("papita");
+		ti2.setLema("la papita es la mejor");
+		ti2.setDescripcion("hola como estas todo bn");
+		ti2.setEmail("papita@gmail.com");
+		ti2.setClave("1234");
+		ti2.setPropietario("juanperez");
+		ti2.setWeb("www.lapapita.com");
+		ti2.setImagen("lapapidasdsata");
+		tiDao.update(ti2);
+		
 		Servicio ser = new Servicio();
 		ser.setNombre("rapipapa");
 		ser.setDescripcion("la papita ya lista");
