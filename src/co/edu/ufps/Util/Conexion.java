@@ -30,7 +30,7 @@ public class Conexion<T> {
 	
 	public static EntityManager getEm(){
 		if ( em == null ) {
-			EntityManagerFactory emf = Persistence.createEntityManagerFactory("avenger");
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("tiendaU-1151555");
             em = emf.createEntityManager();
         } 
 		return em;
