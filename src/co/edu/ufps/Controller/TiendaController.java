@@ -1,6 +1,8 @@
 package co.edu.ufps.Controller;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,9 +33,11 @@ public class TiendaController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		try {
-			String path = request.getServletPath();
-			String action = request.getParameter("action");
+		String path = request.getServletPath();
+		String action = request.getParameter("op");
+		System.out.println(path);
+		System.out.println(action);
+		try {			
 			switch (action) {
 			case "registrar":
 				registrarTienda(request, response);
@@ -64,17 +68,17 @@ public class TiendaController extends HttpServlet {
 	}
 	private void registrarTienda(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Tienda tienda= new Tienda();
+		tienda.setNombre(request.getParameter("nombre"));
 		tienda.setClave(request.getParameter("password"));
+		tienda.setLema(request.getParameter("lema"));
 		tienda.setDescripcion(request.getParameter("descripcion"));
 		tienda.setEmail(request.getParameter("email"));
 		tienda.setFacebook(request.getParameter("facebook"));
-		tienda.setImagen(request.getParameter("imagen"));
-		tienda.setLema(request.getParameter("lema"));
-		tienda.setNombre(request.getParameter("nombre"));
+		tienda.setImagen(request.getParameter("imagen"));		
 		tienda.setPropietario(request.getParameter("propietario"));
 		tienda.setWeb(request.getParameter("web"));
-		Tienda tiendaDB = tiDao.findByField("email", tienda.getEmail());
-		if (tiendaDB == null) {
+		Tienda ti = tiDao.findByField("email", tienda.getEmail());
+		if (ti == null) {
 			tiDao.insert(tienda);
 			request.getRequestDispatcher("login.jsp").forward(request, response);
 		} else {
@@ -84,7 +88,8 @@ public class TiendaController extends HttpServlet {
 	private void showNewForm(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.getRequestDispatcher("registro.jsp").forward(request, response);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("registro.jsp");
+		dispatcher.forward(request, response);
 	}
 
 }
