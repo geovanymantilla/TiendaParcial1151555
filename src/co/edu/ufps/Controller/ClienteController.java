@@ -16,6 +16,8 @@ import co.edu.ufps.Dao.ClienteDao;
 import co.edu.ufps.Dao.ServicioDao;
 import co.edu.ufps.Dao.TiendaDao;
 import co.edu.ufps.Entities.Cliente;
+import co.edu.ufps.Entities.Tienda;
+
 
 
 
@@ -44,6 +46,8 @@ public class ClienteController extends HttpServlet {
 		// TODO Auto-generated method stub
 		String pat = request.getServletPath();
 		String action = request.getParameter("op");
+		System.out.println(pat);
+		System.out.println(action);
 
 		try {
 			switch (action) {
@@ -72,6 +76,9 @@ public class ClienteController extends HttpServlet {
 //			case "/buscar":
 //				buscarEmpleado(request,response);
 //				break;
+			case "Vistalogin":
+				Vistalogin(request, response);
+				break;
 			case "login":
 				login(request, response);
 				break;
@@ -94,27 +101,39 @@ public class ClienteController extends HttpServlet {
 		doGet(request, response);
 	}
 	private void index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List <Tienda> listatienda = tiDao.list();
+		request.getSession().setAttribute("listatienda", listatienda);	
 		request.getRequestDispatcher("index.jsp").forward(request, response);
+	}
+	private void Vistalogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("login.jsp").forward(request, response);
 	}
 
 	private void showNewForm(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		RequestDispatcher dispatcher = request.getRequestDispatcher("registroCliente.jsp");
-
-		dispatcher.forward(request, response);
+		request.getRequestDispatcher("registroCliente.jsp").forward(request, response);
 	}
 	private void login(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String email = request.getParameter("email");
+        String contraseña = request.getParameter("contraseña");
+        ClienteDao uDao = new ClienteDao();
+        Cliente us = uDao.find(email);
+        if(us!=null){
+        	if(us.getClave().contentEquals(contraseña)){
+        		
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
+        	}else{
+        		request.getRequestDispatcher("/login.jsp").forward(request, response);
+        	}
+        }else{
+        	request.getRequestDispatcher("/login.jsp").forward(request, response);
+        }
 
-//		List<Estado> estados = estDao.list();
-//		List<Genero> generos = genDao.list();
-
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("registroCliente.jsp");
-//		request.setAttribute("estados", estados);
-//		request.setAttribute("generos", generos);
-
 		dispatcher.forward(request, response);
 	}
 
@@ -215,5 +234,7 @@ public class ClienteController extends HttpServlet {
 //		RequestDispatcher dispatcher = request.getRequestDispatcher("formEmpleado.jsp");
 //		dispatcher.forward(request, response);
 //	}
+	
+	
 
 }
